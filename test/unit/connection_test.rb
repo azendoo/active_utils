@@ -148,7 +148,7 @@ class ConnectionTest < Test::Unit::TestCase
   end
 
   def test_failure_then_success_with_retry_safe_enabled
-    Net::HTTP.any_instance.expects(:post).times(2).raises(EOFError).then.returns(@ok)
+    ActiveMerchant::Connection.http_class.any_instance.expects(:post).times(2).raises(EOFError).then.returns(@ok)
 
     @connection.retry_safe = true
 
@@ -158,7 +158,7 @@ class ConnectionTest < Test::Unit::TestCase
   end
 
   def test_mixture_of_failures_with_retry_safe_enabled
-    Net::HTTP.any_instance.expects(:post).times(3).raises(Errno::ECONNRESET).
+    ActiveMerchant::Connection.http_class.any_instance.expects(:post).times(3).raises(Errno::ECONNRESET).
                                                    raises(Errno::ECONNREFUSED).
                                                    raises(EOFError)
 
